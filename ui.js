@@ -9,11 +9,14 @@ const App = ({ files, git }) => {
 
   const handleFilesSubmit = items => {
     if (items.length === 0) return;
+
     const fileNames = items.map(({ label }) => label);
+
     git.add(fileNames, () => {
       setSubmitted(items);
     });
   };
+
   return submitted.length === 0 ? (
     <FilesMultiSelect files={files} onSubmit={handleFilesSubmit} />
   ) : (

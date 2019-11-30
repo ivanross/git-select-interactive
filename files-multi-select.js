@@ -1,40 +1,58 @@
 "use strict";
 const React = require("react");
-const { Color, useInput } = require("ink");
-const { status2hex, status2label } = require("./utils");
+const { Box, Color, useInput } = require("ink");
+const { status2hex } = require("./utils");
 const { default: MultiSelect } = require("ink-multi-select");
 
-const Element = ({ label, status }) => (
-  <Color hex={status2hex[status]}>
-    {status2label[status]}: {label}
-  </Color>
-);
+const Element = w => ({ label, status }) => {
+  const color = status2hex[status];
+
+  return (
+    <Color {...color}>
+      <Box width={w}>{status}:</Box> {label}
+    </Color>
+  );
+};
+
+function useList(arr) {
+  const [state, setState] = React.useState(arr);
+
+  const add = item => {
+    setState(values => [...values, item]);
+  };
+
+  const remove = item => {
+    setState(values => values.filter(value => value !== item));
+  };
+
+  return [state, add, remove, setState];
+}
+
+const maxStatusWidth = files => {
+  const arr = files.map(f => f.status.length);
+  return Math.max(...arr);
+};
 
 const FilesMultiSelect = ({ files, onSubmit }) => {
-  const [selected, setSelected] = React.useState([]);
+  const [selected, add, remove, set] = useList([]);
+
+  const w = maxStatusWidth(files);
+
   useInput(input => {
     if (input === "a" || input === "A") {
-      if (selected.length === files.length) setSelected([]);
-      else setSelected(files);
+      if (selected.length === files.length) set([]);
+      else set(files);
     }
   });
-
-  const handleSelect = item => {
-    setSelected(selected => [...selected, item]);
-  };
-
-  const handleUnselect = item => {
-    setSelected(selected => selected.filter(file => file.label !== item.label));
-  };
 
   return (
     <MultiSelect
       items={files}
       selected={selected}
-      itemComponent={Element}
+      itemComponent={Element(w + 5)}
       onSubmit={onSubmit}
-      onSelect={handleSelect}
-      onUnselect={handleUnselect}
+      onSelect={add}
+      onUnselect={remove}
     />
   );
 };

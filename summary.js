@@ -12,7 +12,7 @@ const Summary = ({ files }) => {
 
       {files.map(({ label, status }) => (
         <Box flexDirection="row" paddingLeft={2} key={label}>
-          <Color hex={status2hex[status]}>
+          <Color {...status2hex[status]}>
             {status.charAt(0).toUpperCase()}
           </Color>
           <Text> {label}</Text>

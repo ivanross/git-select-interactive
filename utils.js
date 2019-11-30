@@ -1,18 +1,28 @@
 "use strict";
+
 // prettier-ignore
-module.exports.status2hex = {
-  untracked: "#FFAA00",
-  created:   "#FFAA00",
-  deleted:   "#FF0000",
-  modified:  "#AABB00",
-  renamed:   "#AABB00"
+const statusMap = {
+  "?": "untracked",
+   M : "modified",
+   D : "deleted",
+   R : "renamed"
+};
+
+module.exports.parseFiles = function parseFiles(files) {
+  return files
+    .reduce((acc, { path, index, working_dir }) => {
+      const status = statusMap[working_dir];
+      if (status !== undefined)
+        acc.push({ path, status, value: path, label: path });
+      return acc;
+    }, [])
+    .sort((a, b) => a.path.localeCompare(b.path));
 };
 
 // prettier-ignore
-module.exports.status2label = {
-  untracked: "created ",
-  created:   "created ",
-  deleted:   "deleted ",
-  modified:  "modified",
-  renamed:   "renamed "
+module.exports.status2hex = {
+  untracked: {"yellow": true},
+    deleted: {"red":    true},
+   modified: {"green":  true},
+    renamed: {"green":  true}
 };
