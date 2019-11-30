@@ -2,12 +2,42 @@
   "name": "git-add-interactive",
   "version": "0.0.1",
   "description": "Interactive mode for `git add`",
-  "main": "index.js",
   "author": "Ivan Rossi <ivanross.me@gmail.com>",
   "license": "MIT",
   "private": false,
+  "bin": "index.js",
+  "engines": {
+    "node": ">=8"
+  },
+  "files": [
+    "index.js",
+    "ui.js"
+  ],
   "dependencies": {
+    "import-jsx": "^3.0.0",
     "ink": "^2.6.0",
-    "react": "^16.12.0"
+    "ink-multi-select": "^1.1.0",
+    "nodegit": "^0.26.2",
+    "react": "^16.12.0",
+    "simple-git": "^1.126.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
+    ]
   }
 }
