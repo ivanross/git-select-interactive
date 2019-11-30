@@ -1,0 +1,13 @@
+{
+  "name": "git-add-interactive",
+  "version": "0.0.1",
+  "description": "Interactive mode for `git add`",
+  "main": "index.js",
+  "author": "Ivan Rossi <ivanross.me@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "ink": "^2.6.0",
+    "react": "^16.12.0"
+  }
+}
