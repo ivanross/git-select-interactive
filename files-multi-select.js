@@ -56,9 +56,7 @@ const FilesMultiSelect = ({ files, onSubmit }) => {
   return (
     <Box flexDirection="column">
       <Box>
-        <Box marginRight={1}>
-          {logSymbols.info} Choose which file to upgrade.
-        </Box>
+        <Box marginRight={1}>{logSymbols.info} Choose which file to stage.</Box>
         <Box>
           (Press <Color blue>{"<space>"}</Color> to select,{" "}
           <Color blue>{"<a>"}</Color> to toggle all)

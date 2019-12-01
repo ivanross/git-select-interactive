@@ -13,7 +13,7 @@ $ npm install --global git-select-interactive
 ```
 $ git select-interactive
 
-ℹ Choose which file to upgrade. (Press <space> to select, <a> to toggle all)
+ℹ Choose which file to stage. (Press <space> to select, <a> to toggle all)
     status         file
   ◉ modified:      index.js
 ❯ ◯ untracked:     LICENSE.md
