@@ -1,8 +1,16 @@
 "use strict";
 const React = require("react");
-const { Box, Color, useInput } = require("ink");
+const { Box, Color, Text, useInput } = require("ink");
 const { status2hex } = require("./utils");
+const figures = require("figures");
+const logSymbols = require("log-symbols");
 const { default: MultiSelect } = require("ink-multi-select");
+
+const CheckBox = ({ isSelected }) => (
+  <Box marginRight={1}>
+    <Text>{isSelected ? figures.circleFilled : figures.circle}</Text>
+  </Box>
+);
 
 const Element = w => ({ label, status }) => {
   const color = status2hex[status];
@@ -46,14 +54,36 @@ const FilesMultiSelect = ({ files, onSubmit }) => {
   });
 
   return (
-    <MultiSelect
-      items={files}
-      selected={selected}
-      itemComponent={Element(w + 5)}
-      onSubmit={onSubmit}
-      onSelect={add}
-      onUnselect={remove}
-    />
+    <Box flexDirection="column">
+      <Box>
+        <Box marginRight={1}>
+          {logSymbols.info} Choose which file to upgrade.
+        </Box>
+        <Box>
+          (Press <Color blue>{"<space>"}</Color> to select,{" "}
+          <Color blue>{"<a>"}</Color> to toggle all)
+        </Box>
+      </Box>
+
+      <Box>
+        <Box marginLeft={4} width={w + 2}>
+          <Text underline>status</Text>
+        </Box>
+        <Box marginLeft={4}>
+          <Text underline>file</Text>
+        </Box>
+      </Box>
+
+      <MultiSelect
+        items={files}
+        selected={selected}
+        itemComponent={Element(w + 5)}
+        checkboxComponent={CheckBox}
+        onSubmit={onSubmit}
+        onSelect={add}
+        onUnselect={remove}
+      />
+    </Box>
   );
 };
 

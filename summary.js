@@ -1,11 +1,11 @@
 "use strict";
 const React = require("react");
-const { Box, Color, Text } = require("ink");
+const { Static, Box, Color, Text } = require("ink");
 const { status2hex } = require("./utils");
 
 const Summary = ({ files }) => {
   return (
-    <Box flexDirection="column">
+    <Static flexDirection="column">
       <Box paddingBottom={1}>
         <Text>files added: </Text>
       </Box>
@@ -18,7 +18,7 @@ const Summary = ({ files }) => {
           <Text> {label}</Text>
         </Box>
       ))}
-    </Box>
+    </Static>
   );
 };
 

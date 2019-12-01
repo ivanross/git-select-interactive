@@ -1,22 +1,20 @@
 {
-  "name": "git-add-interactive",
+  "name": "git-select-interactive",
   "version": "0.0.1",
-  "description": "Interactive mode for `git add`",
+  "description": "Interactive mode for git add",
   "author": "Ivan Rossi <ivanross.me@gmail.com>",
   "license": "MIT",
   "private": false,
-  "bin": "index.js",
+  "bin": "cli.js",
   "engines": {
     "node": ">=8"
   },
-  "files": [
-    "index.js",
-    "ui.js"
-  ],
   "dependencies": {
+    "figures": "^3.1.0",
     "import-jsx": "^3.0.0",
     "ink": "^2.6.0",
     "ink-multi-select": "https://github.com/ivanross/ink-multi-select.git#fix-managed-component",
+    "log-symbols": "^3.0.0",
     "nodegit": "^0.26.2",
     "react": "^16.12.0",
     "simple-git": "^1.126.0"
