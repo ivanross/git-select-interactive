@@ -20,7 +20,9 @@ const cli = meow({
 
   Options
   
-    --reset, -r     Select files to unstage.
+    --reset,   -r     Select files to unstage.
+    --help,    -h     Show help
+    --version, -v     Show version
 `,
   autoHelp: true,
   flags: {
