@@ -9,6 +9,9 @@
   "engines": {
     "node": ">=8"
   },
+  "scripts": {
+    "test": "echo no test && exit 0"
+  },
   "dependencies": {
     "figures": "^3.1.0",
     "import-jsx": "^3.0.0",
