@@ -2,6 +2,8 @@
 
 > Interactive mode for git add
 
+![Build Status](https://github.com/ivanross/git-select-interactive/workflows/Test/badge.svg)
+
 ## Install
 
 ```
