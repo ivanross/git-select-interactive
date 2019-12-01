@@ -1,30 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`parseIndexFiles should work 1`] = `
+Array [
+  Object {
+    "files": Array [
+      "bb",
+      "dir/bb\\\\ bb",
+    ],
+    "label": "bb -> \\"dir/bb bb\\"",
+    "status": "renamed",
+    "value": "bb -> \\"dir/bb bb\\"",
+  },
+  Object {
+    "files": Array [
+      "new_file.txt",
+    ],
+    "label": "new_file.txt",
+    "status": "new_file",
+    "value": "new_file.txt",
+  },
+  Object {
+    "files": Array [
+      "test",
+    ],
+    "label": "test",
+    "status": "modified",
+    "value": "test",
+  },
+]
+`;
+
 exports[`parseWorkingDirFiles should work 1`] = `
 Array [
   Object {
-    "label": "a",
-    "path": "a",
-    "status": "untracked",
-    "value": "a",
-  },
-  Object {
-    "label": "b",
-    "path": "b",
-    "status": "modified",
-    "value": "b",
-  },
-  Object {
-    "label": "c",
-    "path": "c",
+    "files": Array [
+      "aa",
+    ],
+    "label": "aa",
     "status": "deleted",
-    "value": "c",
+    "value": "aa",
   },
   Object {
-    "label": "d",
-    "path": "d",
-    "status": "renamed",
-    "value": "d",
+    "files": Array [
+      "dir/cc",
+    ],
+    "label": "dir/cc",
+    "status": "untracked",
+    "value": "dir/cc",
+  },
+  Object {
+    "files": Array [
+      "dir/test",
+    ],
+    "label": "dir/test",
+    "status": "untracked",
+    "value": "dir/test",
   },
 ]
 `;

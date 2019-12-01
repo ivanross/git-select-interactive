@@ -4,23 +4,35 @@ const importJsx = require("import-jsx");
 const FilesMultiSelect = importJsx("./files-multi-select");
 const Summary = importJsx("./summary");
 
-const App = ({ files, git }) => {
+const flatMap = (arr, f) => arr.reduce((acc, el) => [...acc, ...f(el)], []);
+
+const App = ({ files, git, reset }) => {
   const [submitted, setSubmitted] = React.useState([]);
 
   const handleFilesSubmit = items => {
     if (items.length === 0) return;
 
-    const fileNames = items.map(({ label }) => label);
+    const fileNames = flatMap(items, ({ files }) => files);
 
-    git.add(fileNames, () => {
-      setSubmitted(items);
-    });
+    if (reset) {
+      git._run(["reset", ...fileNames], () => {
+        setSubmitted(items);
+      });
+    } else {
+      git.add(fileNames, () => {
+        setSubmitted(items);
+      });
+    }
   };
 
   return submitted.length === 0 ? (
-    <FilesMultiSelect files={files} onSubmit={handleFilesSubmit} />
+    <FilesMultiSelect
+      files={files}
+      onSubmit={handleFilesSubmit}
+      reset={reset}
+    />
   ) : (
-    <Summary files={submitted} />
+    <Summary files={submitted} reset={reset} />
   );
 };
 

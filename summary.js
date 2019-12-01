@@ -3,11 +3,11 @@ const React = require("react");
 const { Static, Box, Color, Text } = require("ink");
 const { status2hex } = require("./utils");
 
-const Summary = ({ files }) => {
+const Summary = ({ files, reset }) => {
   return (
     <Static flexDirection="column">
       <Box paddingBottom={1}>
-        <Text>files added: </Text>
+        <Text>{reset ? "unstaged" : "added"} files: </Text>
       </Box>
 
       {files.map(({ label, status }) => (

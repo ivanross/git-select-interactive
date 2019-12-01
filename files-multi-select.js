@@ -41,7 +41,7 @@ const maxStatusWidth = files => {
   return Math.max(...arr);
 };
 
-const FilesMultiSelect = ({ files, onSubmit }) => {
+const FilesMultiSelect = ({ files, onSubmit, reset }) => {
   const [selected, add, remove, set] = useList([]);
 
   const w = maxStatusWidth(files);
@@ -56,7 +56,9 @@ const FilesMultiSelect = ({ files, onSubmit }) => {
   return (
     <Box flexDirection="column">
       <Box>
-        <Box marginRight={1}>{logSymbols.info} Choose which file to stage.</Box>
+        <Box marginRight={1}>
+          {logSymbols.info} Choose which file to {reset ? "unstage" : "stage"}.
+        </Box>
         <Box>
           (Press <Color blue>{"<space>"}</Color> to select,{" "}
           <Color blue>{"<a>"}</Color> to toggle all)
