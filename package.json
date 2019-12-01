@@ -18,7 +18,7 @@
     "node": ">=8"
   },
   "scripts": {
-    "test": "echo no test && exit 0"
+    "test": "jest"
   },
   "dependencies": {
     "figures": "^3.1.0",
@@ -33,7 +33,9 @@
     "@babel/cli": "^7.7.4",
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
-    "@babel/preset-react": "^7.7.4"
+    "@babel/preset-react": "^7.7.4",
+    "ink-testing-library": "^1.0.2",
+    "jest": "^24.9.0"
   },
   "babel": {
     "presets": [

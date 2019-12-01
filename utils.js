@@ -8,7 +8,7 @@ const statusMap = {
    R : "renamed"
 };
 
-module.exports.parseFiles = function parseFiles(files) {
+module.exports.parseWorkingDirFiles = function parseWorkingDirFiles(files) {
   return files
     .reduce((acc, { path, index, working_dir }) => {
       const status = statusMap[working_dir];

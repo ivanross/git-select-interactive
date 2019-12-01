@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseWorkingDirFiles should work 1`] = `
+Array [
+  Object {
+    "label": "a",
+    "path": "a",
+    "status": "untracked",
+    "value": "a",
+  },
+  Object {
+    "label": "b",
+    "path": "b",
+    "status": "modified",
+    "value": "b",
+  },
+  Object {
+    "label": "c",
+    "path": "c",
+    "status": "deleted",
+    "value": "c",
+  },
+  Object {
+    "label": "d",
+    "path": "d",
+    "status": "renamed",
+    "value": "d",
+  },
+]
+`;
