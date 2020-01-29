@@ -82,6 +82,7 @@ const FilesMultiSelect = ({ files, onSubmit, reset }) => {
         onSubmit={onSubmit}
         onSelect={add}
         onUnselect={remove}
+        limit={20}
       />
     </Box>
   );
