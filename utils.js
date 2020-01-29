@@ -30,46 +30,30 @@ function cleanString(str) {
 
 module.exports.cleanString = cleanString;
 
-function pathFromCWD(from, to) {
-  return function(filePath) {
-    return path.relative(to, path.join(from, filePath));
-  };
+function relativePath(from, to, filePath) {
+  return path.relative(to, path.join(from, filePath));
 }
 
-module.exports.pathFromCWD = pathFromCWD;
+module.exports.relativePath = relativePath;
 
-module.exports.parseWorkingDirFiles = function parseWorkingDirFiles(
-  files,
-  parse = x => x
-) {
+module.exports.getWorkingDirFilesInfo = function getWorkingDirFilesInfo(files) {
   return files
-    .reduce((acc, { path, working_dir }) => {
-      const status = statusMap[working_dir];
-      if (!status) return acc;
-
-      const fromCwd = parse(path);
-      const fileName = cleanString(fromCwd);
-      acc.push({
-        files: [fileName],
-        status,
-        value: fromCwd,
-        label: fromCwd
-      });
-      return acc;
-    }, [])
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .filter(({ working_dir }) => statusMap[working_dir])
+    .map(({ path, working_dir }) => ({ path, status: statusMap[working_dir] }));
 };
 
-module.exports.parseIndexFiles = function parseIndexFiles(
-  files,
-  parse = x => x
-) {
+module.exports.getIndexFilesInfo = function getIndexFilesInfo(files) {
   return files
-    .reduce((acc, { path, index, working_dir }) => {
-      const status = statusMap[index];
-      if (!status || working_dir === "?") return acc;
+    .filter(({ index, working_dir }) => statusMap[index] && working_dir !== "?")
+    .map(({ path, index }) => ({ path, status: statusMap[index] }));
+};
 
-      const fromCWDFiles = path.split(" -> ").map(parse);
+module.exports.parseFilesInfo = function parseFilesInfo(filesInfo, from, to) {
+  return filesInfo
+    .reduce((acc, { path, status }) => {
+      const fromCWDFiles = path
+        .split(" -> ")
+        .map(p => relativePath(from, to, p));
       const files = fromCWDFiles.map(cleanString);
 
       acc.push({

@@ -6,9 +6,9 @@ const meow = require("meow");
 const Git = require("simple-git");
 const App = require("import-jsx")("./ui");
 const {
-  parseWorkingDirFiles,
-  parseIndexFiles,
-  pathFromCWD
+  parseFilesInfo,
+  getWorkingDirFilesInfo,
+  getIndexFilesInfo
 } = require("./utils");
 
 const cli = meow({
@@ -59,9 +59,9 @@ git
   })
   .revparse(["--show-toplevel"], (err, res) => (rootDir = res))
   .status((err, res) => {
-    const pathParser = pathFromCWD(rootDir, workingDir);
-    const fileParser = reset ? parseIndexFiles : parseWorkingDirFiles;
-    const files = fileParser(res.files, pathParser);
+    const getFilesInfo = reset ? getIndexFilesInfo : getWorkingDirFilesInfo;
+    const fileInfo = getFilesInfo(res.files);
+    const files = parseFilesInfo(fileInfo, rootDir, workingDir);
     if (files.length === 0) return;
 
     Ink.render(React.createElement(App, { files, git, reset }));

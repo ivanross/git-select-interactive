@@ -1,6 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parseIndexFiles should work 1`] = `
+exports[`getIndexFilesInfo should work 1`] = `
+Array [
+  Object {
+    "path": "bb -> \\"dir/bb bb\\"",
+    "status": "renamed",
+  },
+  Object {
+    "path": "new_file.txt",
+    "status": "new_file",
+  },
+  Object {
+    "path": "test",
+    "status": "modified",
+  },
+]
+`;
+
+exports[`getWorkingDirFilesInfo should work 1`] = `
+Array [
+  Object {
+    "path": "aa",
+    "status": "deleted",
+  },
+  Object {
+    "path": "dir/cc",
+    "status": "untracked",
+  },
+  Object {
+    "path": "dir/test",
+    "status": "untracked",
+  },
+]
+`;
+
+exports[`parseFilesInfo should work with index files 1`] = `
 Array [
   Object {
     "files": Array [
@@ -30,7 +64,7 @@ Array [
 ]
 `;
 
-exports[`parseWorkingDirFiles should work 1`] = `
+exports[`parseFilesInfo should work with working dir files 1`] = `
 Array [
   Object {
     "files": Array [
@@ -55,6 +89,35 @@ Array [
     "label": "dir/test",
     "status": "untracked",
     "value": "dir/test",
+  },
+]
+`;
+
+exports[`parseFilesInfo should work with working dir files with different paths 1`] = `
+Array [
+  Object {
+    "files": Array [
+      "../../e/f/aa",
+    ],
+    "label": "../../e/f/aa",
+    "status": "deleted",
+    "value": "../../e/f/aa",
+  },
+  Object {
+    "files": Array [
+      "../../e/f/dir/cc",
+    ],
+    "label": "../../e/f/dir/cc",
+    "status": "untracked",
+    "value": "../../e/f/dir/cc",
+  },
+  Object {
+    "files": Array [
+      "../../e/f/dir/test",
+    ],
+    "label": "../../e/f/dir/test",
+    "status": "untracked",
+    "value": "../../e/f/dir/test",
   },
 ]
 `;

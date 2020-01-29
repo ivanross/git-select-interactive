@@ -1,8 +1,9 @@
 const {
-  parseWorkingDirFiles,
   cleanString,
-  parseIndexFiles,
-  pathFromCWD
+  parseFilesInfo,
+  relativePath,
+  getWorkingDirFilesInfo,
+  getIndexFilesInfo
 } = require("../utils");
 
 //prettier-ignore
@@ -14,14 +15,6 @@ const test = [
   { path: "dir/cc"           , index: "?", working_dir: "?" },
   { path: "dir/test"         , index: "?", working_dir: "?" }
 ];
-
-describe(parseWorkingDirFiles, () => {
-  it("should work", () => {
-    expect(parseWorkingDirFiles([])).toEqual([]);
-
-    expect(parseWorkingDirFiles(test)).toMatchSnapshot();
-  });
-});
 
 describe(cleanString, () => {
   it("should clean string", () => {
@@ -35,17 +28,45 @@ describe(cleanString, () => {
   });
 });
 
-describe(parseIndexFiles, () => {
-  it("should work", () => {
-    expect(parseIndexFiles([])).toEqual([]);
-
-    expect(parseIndexFiles(test)).toMatchSnapshot();
+describe(relativePath, () => {
+  it("should return path from current working dir", () => {
+    expect(relativePath("/a/b/c", "/a/b/c/d", "f")).toEqual("../f");
+    expect(relativePath("/a/b/c", "/a/b", "f")).toEqual("c/f");
   });
 });
 
-describe(pathFromCWD, () => {
-  it("should return path from current working dir", () => {
-    expect(pathFromCWD("/a/b/c", "/a/b/c/d")("f")).toEqual("../f");
-    expect(pathFromCWD("/a/b/c", "/a/b")("f")).toEqual("c/f");
+describe(getWorkingDirFilesInfo, () => {
+  it("should work", () => {
+    expect(getWorkingDirFilesInfo([])).toEqual([]);
+    expect(getWorkingDirFilesInfo(test)).toMatchSnapshot();
+  });
+});
+
+describe(getIndexFilesInfo, () => {
+  it("should work", () => {
+    expect(getIndexFilesInfo([])).toEqual([]);
+    expect(getIndexFilesInfo(test)).toMatchSnapshot();
+  });
+});
+
+describe(parseFilesInfo, () => {
+  it("should work with index files", () => {
+    const indexFiles = getIndexFilesInfo(test);
+    expect(parseFilesInfo([])).toEqual([]);
+    expect(parseFilesInfo(indexFiles, "", "")).toMatchSnapshot();
+  });
+
+  it("should work with working dir files", () => {
+    const workingDirFiles = getWorkingDirFilesInfo(test);
+    expect(parseFilesInfo([])).toEqual([]);
+    expect(parseFilesInfo(workingDirFiles, "", "")).toMatchSnapshot();
+  });
+
+  it("should work with working dir files with different paths", () => {
+    const workingDirFiles = getWorkingDirFilesInfo(test);
+    expect(parseFilesInfo([])).toEqual([]);
+    expect(
+      parseFilesInfo(workingDirFiles, "/a/b/e/f", "/a/b/c/d")
+    ).toMatchSnapshot();
   });
 });
