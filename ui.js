@@ -14,15 +14,8 @@ const App = ({ files, git, reset }) => {
 
     const fileNames = flatMap(items, ({ files }) => files);
 
-    if (reset) {
-      git._run(["reset", ...fileNames], () => {
-        setSubmitted(items);
-      });
-    } else {
-      git.add(fileNames, () => {
-        setSubmitted(items);
-      });
-    }
+    if (reset) git.reset(fileNames, () => setSubmitted(items));
+    else git.add(fileNames, () => setSubmitted(items));
   };
 
   return submitted.length === 0 ? (

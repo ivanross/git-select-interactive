@@ -1,7 +1,8 @@
 const {
   parseWorkingDirFiles,
   cleanString,
-  parseIndexFiles
+  parseIndexFiles,
+  pathFromCWD
 } = require("../utils");
 
 //prettier-ignore
@@ -39,5 +40,12 @@ describe(parseIndexFiles, () => {
     expect(parseIndexFiles([])).toEqual([]);
 
     expect(parseIndexFiles(test)).toMatchSnapshot();
+  });
+});
+
+describe(pathFromCWD, () => {
+  it("should return path from current working dir", () => {
+    expect(pathFromCWD("/a/b/c", "/a/b/c/d")("f")).toEqual("../f");
+    expect(pathFromCWD("/a/b/c", "/a/b")("f")).toEqual("c/f");
   });
 });
