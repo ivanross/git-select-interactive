@@ -15,7 +15,8 @@
   "private": false,
   "bin": "./build/cli.js",
   "files": [
-    "build"
+    "build",
+    "docs"
   ],
   "engines": {
     "node": ">=8"
