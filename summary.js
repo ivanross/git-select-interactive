@@ -6,7 +6,7 @@ const ChangesIndicator = require("import-jsx")("./changes-indicator");
 
 const Summary = ({ files, reset }) => {
   return (
-    <Static flexDirection="column">
+    <Static marginTop={1} flexDirection="column">
       <Box paddingBottom={1}>
         <Text>{reset ? "unstaged" : "added"} files: </Text>
       </Box>

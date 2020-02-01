@@ -60,7 +60,7 @@ const FilesMultiSelect = ({ files, onSubmit, reset }) => {
   });
 
   return (
-    <Box flexDirection="column">
+    <Box marginTop={1} flexDirection="column">
       <Box>
         <Box marginRight={1}>
           {logSymbols.info} Choose which file to {reset ? "unstage" : "stage"}.
