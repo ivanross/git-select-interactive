@@ -17,10 +17,10 @@ $ git select-interactive
 
 ℹ Choose which file to stage. (Press <space> to select, <a> to toggle all)
     status         file
-  ◉ modified:      index.js
+  ◉ modified:      index.js (+10-2)
 ❯ ◯ untracked:     LICENSE.md
-  ◯ modified:      package.json
-  ◯ modified:      README.md
+  ◯ modified:      package.json (+1)
+  ◯ modified:      README.md (-2)
   ◯ deleted:       test.js
 ```
 
