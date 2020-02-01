@@ -1,8 +1,8 @@
-const React = require("react");
-const { Box, Color, useInput } = require("ink");
+import React from 'react'
+import { Box, Color } from 'ink'
 
-const ChangesIndicator = ({ insertions, deletions }) => {
-  if (!insertions && !deletions) return null;
+export default function ChangesIndicator({ insertions, deletions }) {
+  if (!insertions && !deletions) return null
   return (
     <Box marginLeft={1}>
       (
@@ -18,7 +18,5 @@ const ChangesIndicator = ({ insertions, deletions }) => {
       ) : null}
       )
     </Box>
-  );
-};
-
-module.exports = ChangesIndicator;
+  )
+}
