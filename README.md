@@ -4,6 +4,8 @@
 
 ![Build Status](https://github.com/ivanross/git-select-interactive/workflows/Test/badge.svg)
 
+<img align="middle" src="docs/git-select-interactive.png"  />
+
 ## Install
 
 ```
@@ -12,17 +14,13 @@ $ npm install --global git-select-interactive
 
 ## Usage
 
-```
+```bash
 $ git select-interactive
-
-ℹ Choose which file to stage. (Press <space> to select, <a> to toggle all)
-    status         file
-  ◉ modified:      index.js (+10-2)
-❯ ◯ untracked:     LICENSE.md
-  ◯ modified:      package.json (+1)
-  ◯ modified:      README.md (-2)
-  ◯ deleted:       test.js
 ```
+
+Navigate files with arrows, press `<space>` to select/deselect a single file, press `<a>` to select/deselect all. Finally press `<return>` to **stage** files.
+
+Use `--reset` option to **unstage** files.
 
 ## License
 
