@@ -2,6 +2,8 @@
 const React = require("react");
 const { Box, Color, Text, useInput } = require("ink");
 const { status2hex } = require("./utils");
+const ChangesIndicator = require("import-jsx")("./changes-indicator");
+
 const figures = require("figures");
 const logSymbols = require("log-symbols");
 const { default: MultiSelect } = require("ink-multi-select");
@@ -12,13 +14,17 @@ const CheckBox = ({ isSelected }) => (
   </Box>
 );
 
-const Element = w => ({ label, status }) => {
+const Element = w => ({ label, status, insertions, deletions }) => {
   const color = status2hex[status];
 
   return (
-    <Color {...color}>
-      <Box width={w}>{status}:</Box> {label}
-    </Color>
+    <Box>
+      <Color {...color}>
+        <Box width={w}>{status}:</Box>
+        <Box>{label}</Box>
+      </Color>
+      <ChangesIndicator insertions={insertions} deletions={deletions} />
+    </Box>
   );
 };
 

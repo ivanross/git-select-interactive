@@ -46,7 +46,15 @@ const cli = meow({
 const { reset } = cli.flags;
 const workingDir = process.cwd();
 let rootDir;
+let changeInfo;
 const git = Git(workingDir);
+
+function mergeBy(arr1, arr2, match) {
+  return arr1.map(obj => {
+    const mergeable = arr2.find(o => match(obj, o));
+    return mergeable ? { ...obj, ...mergeable } : obj;
+  });
+}
 
 const DEFAULT_ERROR_MESSAGE =
   "fatal: not a git repository (or any of the parent directories): .git";
@@ -54,13 +62,22 @@ const DEFAULT_ERROR_MESSAGE =
 git
   .checkIsRepo((err, isRepo) => {
     if (isRepo) return;
-    console.log(DEFAULT_ERROR_MESSAGE);
+    console.error(DEFAULT_ERROR_MESSAGE);
     process.exit(128);
   })
   .revparse(["--show-toplevel"], (err, res) => (rootDir = res))
+  .diffSummary(
+    reset ? ["--cached"] : [],
+    (err, res) => (changeInfo = res.files)
+  )
   .status((err, res) => {
     const getFilesInfo = reset ? getIndexFilesInfo : getWorkingDirFilesInfo;
-    const fileInfo = getFilesInfo(res.files);
+    const mergedFile = mergeBy(
+      res.files,
+      changeInfo,
+      (file1, file2) => file1.path === file2.file
+    );
+    const fileInfo = getFilesInfo(mergedFile);
     const files = parseFilesInfo(fileInfo, rootDir, workingDir);
     if (files.length === 0) return;
 

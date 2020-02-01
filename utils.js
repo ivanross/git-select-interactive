@@ -39,18 +39,28 @@ module.exports.relativePath = relativePath;
 module.exports.getWorkingDirFilesInfo = function getWorkingDirFilesInfo(files) {
   return files
     .filter(({ working_dir }) => statusMap[working_dir])
-    .map(({ path, working_dir }) => ({ path, status: statusMap[working_dir] }));
+    .map(({ path, working_dir, insertions, deletions }) => ({
+      path,
+      status: statusMap[working_dir],
+      insertions,
+      deletions
+    }));
 };
 
 module.exports.getIndexFilesInfo = function getIndexFilesInfo(files) {
   return files
     .filter(({ index, working_dir }) => statusMap[index] && working_dir !== "?")
-    .map(({ path, index }) => ({ path, status: statusMap[index] }));
+    .map(({ path, index, insertions, deletions }) => ({
+      path,
+      status: statusMap[index],
+      insertions,
+      deletions
+    }));
 };
 
 module.exports.parseFilesInfo = function parseFilesInfo(filesInfo, from, to) {
   return filesInfo
-    .reduce((acc, { path, status }) => {
+    .reduce((acc, { path, status, insertions, deletions }) => {
       const fromCWDFiles = path
         .split(" -> ")
         .map(p => relativePath(from, to, p));
@@ -60,7 +70,9 @@ module.exports.parseFilesInfo = function parseFilesInfo(filesInfo, from, to) {
         files,
         status,
         label: fromCWDFiles.join(" -> "),
-        value: fromCWDFiles.join(" -> ")
+        value: fromCWDFiles.join(" -> "),
+        insertions: insertions || 0,
+        deletions: deletions || 0
       });
       return acc;
     }, [])
