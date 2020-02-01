@@ -53,7 +53,7 @@ export function getIndexFilesInfo(files) {
     }))
 }
 
-export function parseFilesInfo(filesInfo, from, to) {
+export function parseFilesInfo(filesInfo, from?, to?) {
   return filesInfo
     .reduce((acc, { path, status, insertions, deletions }) => {
       const fromCWDFiles = path.split(' -> ').map(p => relativePath(from, to, p))

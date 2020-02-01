@@ -3,7 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "lib": ["es6", "es2015", "dom"],
-    "types": ["node"],
+    "types": ["node", "jest"],
     "declaration": true,
     "outDir": "build",
     "strictNullChecks": true,
