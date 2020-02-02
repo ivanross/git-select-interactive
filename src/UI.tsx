@@ -1,7 +1,7 @@
 import React from 'react'
 import FilesMultiSelect from './components/FilesMultiSelect'
 import Summary from './components/Summary'
-import { flatMap } from './utils'
+import { flatMap } from './lib/utils'
 import { SimpleGit } from 'simple-git/promise'
 import { FileInfo } from './lib/simple-git-parse'
 

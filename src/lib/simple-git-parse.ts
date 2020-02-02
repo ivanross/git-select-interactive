@@ -3,8 +3,8 @@ import {
   DiffResultTextFile,
   DiffResultBinaryFile,
 } from 'simple-git/typings/response'
-import { relativePath, cleanString, mergeBy } from '../utils'
-import { ValuesOf, Id, KeysOf } from '../types'
+import { relativePath, cleanString, mergeBy } from './utils'
+import { ValuesOf, Id, KeysOf } from './types'
 
 // prettier-ignore
 const statusMap = {
