@@ -13,16 +13,23 @@
   "homepage": "https://github.com/ivanross/git-select-interactive",
   "license": "MIT",
   "private": false,
-  "bin": "cli.js",
+  "bin": "./build/cli.js",
+  "files": [
+    "build",
+    "docs"
+  ],
   "engines": {
     "node": ">=8"
   },
   "scripts": {
-    "test": "jest"
+    "build": "rm -rf build && tsc && chmod +x build/cli.js",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "release": "np",
+    "prerelease": "yarn build"
   },
   "dependencies": {
     "figures": "^3.1.0",
-    "import-jsx": "^3.0.0",
     "ink": "^2.6.0",
     "ink-multi-select": "https://github.com/ivanross/ink-multi-select.git#fix-managed-component",
     "log-symbols": "^3.0.0",
@@ -31,29 +38,21 @@
     "simple-git": "^1.126.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "@babel/preset-react": "^7.7.4",
+    "@types/jest": "^25.1.1",
+    "@types/meow": "^5.0.0",
+    "@types/node": "^13.7.0",
+    "@types/react": "^16.9.19",
     "ink-testing-library": "^1.0.2",
-    "jest": "^24.9.0"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-react",
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": true
-          }
-        }
-      ]
-    ]
+    "jest": "^25.1.0",
+    "np": "^5.2.1",
+    "ts-jest": "^25.1.0",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.7.5"
   },
   "jest": {
-    "collectCoverageFrom": [
-      "*.js"
-    ]
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "preset": "ts-jest"
   }
 }
