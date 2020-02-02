@@ -1,4 +1,4 @@
-import { cleanString, relativePath, mergeBy } from '../src/utils'
+import { cleanString, relativePath, mergeBy } from '../src/lib/utils'
 
 //prettier-ignore
 const test = [
