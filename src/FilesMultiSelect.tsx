@@ -1,19 +1,21 @@
 import React from 'react'
 import { Box, Color, Text, useInput } from 'ink'
-import { status2hex } from './utils'
+import { status2hex } from './simple-git-parse'
 import ChangesIndicator from './ChangesIndicator'
 
 import figures from 'figures'
 import logSymbols from 'log-symbols'
 import MultiSelect from 'ink-multi-select'
+import { FileInfo } from './simple-git-parse'
+import { useList } from './useList'
 
-const CheckBox = ({ isSelected }) => (
+const CheckBox = ({ isSelected }: { isSelected: boolean }) => (
   <Box marginRight={1}>
     <Text>{isSelected ? figures.circleFilled : figures.circle}</Text>
   </Box>
 )
 
-const Element = w => ({ label, status, insertions, deletions }) => {
+const Element = (w: number) => ({ label, status, insertions, deletions }: FileInfo) => {
   const color = status2hex[status]
 
   return (
@@ -27,27 +29,19 @@ const Element = w => ({ label, status, insertions, deletions }) => {
   )
 }
 
-function useList(arr) {
-  const [state, setState] = React.useState(arr)
-
-  const add = item => {
-    setState(values => [...values, item])
-  }
-
-  const remove = item => {
-    setState(values => values.filter(value => value !== item))
-  }
-
-  return [state, add, remove, setState]
-}
-
-const maxStatusWidth = files => {
+const maxStatusWidth = (files: FileInfo[]) => {
   const arr = files.map(f => f.status.length)
   return Math.max(...arr)
 }
 
-export default function FilesMultiSelect({ files, onSubmit, reset }) {
-  const [selected, add, remove, set] = useList([])
+interface Props {
+  files: FileInfo[]
+  onSubmit: (files: FileInfo[]) => void
+  reset: boolean
+}
+
+export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
+  const [selected, add, remove, set] = useList<FileInfo>([])
 
   const w = maxStatusWidth(files)
 

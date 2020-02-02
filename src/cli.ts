@@ -4,7 +4,7 @@ import * as Ink from 'ink'
 import meow from 'meow'
 import Git, { SimpleGit } from 'simple-git/promise'
 import App from './App'
-import { parse } from './simple-git-parse'
+import { parse, FileStatusInfo } from './simple-git-parse'
 import { DEFAULT_ERROR_MESSAGE } from './constants'
 
 const cli = meow({
@@ -55,7 +55,7 @@ async function run(git: SimpleGit) {
   const changeInfo = (await git.diffSummary(reset ? ['--cached'] : [])).files
   const statusInfo = (await git.status()).files
 
-  const files = parse(statusInfo, changeInfo, rootDir, workingDir, reset)
+  const files = parse(statusInfo as FileStatusInfo[], changeInfo, rootDir, workingDir, reset)
   if (files.length === 0) return
 
   Ink.render(React.createElement(App, { files, git, reset }))

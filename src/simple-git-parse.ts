@@ -4,6 +4,7 @@ import {
   DiffResultBinaryFile,
 } from 'simple-git/typings/response'
 import { relativePath, cleanString, mergeBy } from './utils'
+import { ValuesOf, Id, KeysOf } from './types'
 
 // prettier-ignore
 const statusMap = {
@@ -12,12 +13,26 @@ const statusMap = {
   "D": "deleted",
   "R": "renamed",
   "A": "new_file",
-};
+} as const
 
-interface FileChangesInfo extends Partial<DiffResultTextFile & DiffResultBinaryFile> {}
+// prettier-ignore
+export const status2hex: Record<Status, { [k: string]: boolean }> = {
+  untracked: {"yellow": true},
+  modified:  {"green":  true},
+  deleted:   {"red":    true},
+  renamed:   {"green":  true},
+  new_file:  {"yellow": true}
+}
+
+export type StatusIndex = KeysOf<typeof statusMap>
+export type Status = ValuesOf<typeof statusMap>
+
+export type FileStatusInfo = Id<FileStatusSumary & { working_dir: StatusIndex; index: StatusIndex }>
+export type FileChangesInfo = Partial<DiffResultTextFile & DiffResultBinaryFile>
 export type FileInfo = ReturnType<typeof parse>[number]
+
 export function parse(
-  statusInfo: FileStatusSumary[],
+  statusInfo: FileStatusInfo[],
   changesInfo: FileChangesInfo[],
   from: string,
   to: string,
@@ -32,7 +47,7 @@ export function parse(
         : ({ index, working_dir }) => statusMap[index] && working_dir !== '?'
     )
     .map(info => {
-      const status: string = statusMap[!reset ? info.working_dir : info.index]
+      const status = statusMap[!reset ? info.working_dir : info.index]
       const fromCWDFiles = info.path.split(' -> ').map(p => relativePath(from, to, p))
       const files = fromCWDFiles.map(cleanString)
       const label = files.join(' -> ')

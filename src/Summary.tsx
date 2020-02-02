@@ -1,9 +1,15 @@
 import React from 'react'
 import { Box, Color, Text, Static } from 'ink'
-import { status2hex } from './utils'
+import { status2hex } from './simple-git-parse'
 import ChangesIndicator from './ChangesIndicator'
+import { FileInfo } from './simple-git-parse'
 
-export default function Summary({ files, reset }) {
+interface Props {
+  files: FileInfo[]
+  reset: boolean
+}
+
+export default function Summary({ files, reset }: Props) {
   return (
     <Static>
       <Box paddingBottom={1} marginTop={1}>
