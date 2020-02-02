@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Color, Text, useInput } from 'ink'
 import { status2hex } from '../lib/simple-git-parse'
 import ChangesIndicator from './ChangesIndicator'
 
+import chalk from 'chalk'
 import figures from 'figures'
 import logSymbols from 'log-symbols'
-import MultiSelect from 'ink-multi-select'
+import MultiSelect, { Indicator } from 'ink-multi-select'
+import TextInput from 'ink-text-input'
 import { FileInfo } from '../lib/simple-git-parse'
 import { useList } from '../hooks/useList'
 
@@ -15,14 +17,27 @@ const CheckBox = ({ isSelected }: { isSelected: boolean }) => (
   </Box>
 )
 
-const Element = (w: number) => ({ label, status, insertions, deletions }: FileInfo) => {
+function highlight(label: string, search: string) {
+  if (!search) return label
+  const start = label.toLowerCase().indexOf(search.toLowerCase())
+  if (start === -1) return label
+  const match = label.slice(start, start + search.length)
+  return label.replace(match, chalk.inverse(match))
+}
+
+const Element = (w: number, search: string) => ({
+  label,
+  status,
+  insertions,
+  deletions,
+}: FileInfo) => {
   const color = status2hex[status]
 
   return (
     <Box>
       <Color {...color}>
         <Box width={w}>{status}:</Box>
-        <Box>{label}</Box>
+        <Box>{highlight(label, search)}</Box>
       </Color>
       <ChangesIndicator insertions={insertions} deletions={deletions} />
     </Box>
@@ -42,16 +57,30 @@ interface Props {
 
 export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
   const [selected, add, remove, set] = useList<FileInfo>([])
+  const [searchFocus, setSearchFocus] = useState(false)
+  const [search, setSearch] = useState('')
+  const resetSearch = () => setSearch('')
 
   const w = maxStatusWidth(files)
+  const height = Math.min(20, files.length)
+  const trimmedSearch = search.trim()
+  const searchVisible = searchFocus || trimmedSearch
+
+  const filteredFiles = trimmedSearch
+    ? files.filter(file => file.label.toLowerCase().includes(trimmedSearch.toLowerCase()))
+    : files
 
   useInput(input => {
-    if (input === 'a' || input === 'A') {
-      if (selected.length === files.length) set([])
-      else set(files)
+    if ((input === 'a' || input === 'A') && !searchFocus) {
+      if (filteredFiles.every(f => selected.includes(f))) {
+        set(selected.filter(f => !filteredFiles.includes(f)))
+      } else {
+        set(selected.concat(filteredFiles.filter(f => !selected.includes(f))))
+      }
     }
-  })
 
+    if (input === 'f' && !searchFocus) setSearchFocus(true)
+  })
   return (
     <Box marginTop={1} flexDirection="column">
       <Box>
@@ -73,16 +102,36 @@ export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
         </Box>
       </Box>
 
-      <MultiSelect
-        items={files}
-        selected={selected}
-        itemComponent={Element(w + 5)}
-        checkboxComponent={CheckBox}
-        onSubmit={onSubmit}
-        onSelect={add}
-        onUnselect={remove}
-        limit={20}
-      />
+      <Box height={height}>
+        <MultiSelect
+          items={filteredFiles}
+          selected={selected}
+          itemComponent={Element(w + 5, trimmedSearch)}
+          checkboxComponent={CheckBox}
+          indicatorComponent={!searchFocus ? Indicator : () => <Box width={2} />}
+          onSubmit={!trimmedSearch ? onSubmit : resetSearch}
+          onSelect={add}
+          onUnselect={remove}
+          limit={height}
+          focus={!searchFocus}
+        />
+      </Box>
+
+      <Box marginTop={1} height={1}>
+        {searchVisible ? (
+          <Box marginRight={1}>
+            <Color gray={!searchFocus}>
+              {figures.pointerSmall}{' '}
+              <TextInput
+                value={search}
+                onChange={setSearch}
+                focus={searchFocus}
+                onSubmit={() => setSearchFocus(false)}
+              />
+            </Color>
+          </Box>
+        ) : null}
+      </Box>
     </Box>
   )
 }
