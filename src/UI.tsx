@@ -14,13 +14,15 @@ interface Props {
 export default function UI({ files, git, reset }: Props) {
   const [submitted, setSubmitted] = React.useState<FileInfo[]>([])
 
-  const handleFilesSubmit = (items: FileInfo[]) => {
+  const handleFilesSubmit = async (items: FileInfo[]) => {
     if (items.length === 0) return
 
     const fileNames = flatMap(items, ({ files }) => files.reverse())
 
-    if (reset) git.reset(fileNames).then(() => setSubmitted(items))
-    else git.add(fileNames).then(() => setSubmitted(items))
+    if (reset) await git.reset(fileNames)
+    else await git.add(fileNames)
+
+    setSubmitted(items)
   }
 
   return submitted.length === 0 ? (

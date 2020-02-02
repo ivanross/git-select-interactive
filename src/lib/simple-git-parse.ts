@@ -59,6 +59,9 @@ export function parse(
         value: label,
         insertions: info.insertions ?? 0,
         deletions: info.deletions ?? 0,
+        before: info.before ?? 0,
+        after: info.after ?? 0,
+        binary: info.binary ?? false,
       }
     })
 

@@ -30,6 +30,9 @@ const Element = (w: number, search: string) => ({
   status,
   insertions,
   deletions,
+  binary,
+  after,
+  before,
 }: FileInfo) => {
   const color = status2hex[status]
 
@@ -39,7 +42,13 @@ const Element = (w: number, search: string) => ({
         <Box width={w}>{status}:</Box>
         <Box>{highlight(label, search)}</Box>
       </Color>
-      <ChangesIndicator insertions={insertions} deletions={deletions} />
+      <ChangesIndicator
+        insertions={insertions}
+        deletions={deletions}
+        binary={binary}
+        after={after}
+        before={before}
+      />
     </Box>
   )
 }
@@ -81,6 +90,7 @@ export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
 
     if (input === 'f' && !searchFocus) setSearchFocus(true)
   })
+
   return (
     <Box marginTop={1} flexDirection="column">
       <Box>
