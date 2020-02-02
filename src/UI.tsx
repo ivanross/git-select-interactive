@@ -1,9 +1,9 @@
 import React from 'react'
-import FilesMultiSelect from './FilesMultiSelect'
-import Summary from './Summary'
+import FilesMultiSelect from './components/FilesMultiSelect'
+import Summary from './components/Summary'
 import { flatMap } from './utils'
 import { SimpleGit } from 'simple-git/promise'
-import { FileInfo } from './simple-git-parse'
+import { FileInfo } from './lib/simple-git-parse'
 
 interface Props {
   git: SimpleGit

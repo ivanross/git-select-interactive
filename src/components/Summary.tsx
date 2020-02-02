@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box, Color, Text, Static } from 'ink'
-import { status2hex } from './simple-git-parse'
+import { status2hex } from '../lib/simple-git-parse'
 import ChangesIndicator from './ChangesIndicator'
-import { FileInfo } from './simple-git-parse'
+import { FileInfo } from '../lib/simple-git-parse'
 
 interface Props {
   files: FileInfo[]

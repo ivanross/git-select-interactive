@@ -4,8 +4,8 @@ import * as Ink from 'ink'
 import meow from 'meow'
 import Git, { SimpleGit } from 'simple-git/promise'
 import UI from './UI'
-import { parse, FileStatusInfo } from './simple-git-parse'
-import { DEFAULT_ERROR_MESSAGE } from './constants'
+import { parse, FileStatusInfo } from './lib/simple-git-parse'
+import { DEFAULT_ERROR_MESSAGE } from './lib/constants'
 
 const cli = meow({
   help: `

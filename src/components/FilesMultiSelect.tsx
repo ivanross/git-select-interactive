@@ -1,13 +1,13 @@
 import React from 'react'
 import { Box, Color, Text, useInput } from 'ink'
-import { status2hex } from './simple-git-parse'
+import { status2hex } from '../lib/simple-git-parse'
 import ChangesIndicator from './ChangesIndicator'
 
 import figures from 'figures'
 import logSymbols from 'log-symbols'
 import MultiSelect from 'ink-multi-select'
-import { FileInfo } from './simple-git-parse'
-import { useList } from './useList'
+import { FileInfo } from '../lib/simple-git-parse'
+import { useList } from '../hooks/useList'
 
 const CheckBox = ({ isSelected }: { isSelected: boolean }) => (
   <Box marginRight={1}>
