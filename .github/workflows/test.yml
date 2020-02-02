@@ -16,10 +16,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, test
+      - name: npm install
+        run: npm install
+      - name: npm test
+        run: npm test
+      - name: npm build
         run: |
-          npm install
-          npm test
-          git-select-interactive -v
-        env:
-          CI: true
+          npm run build
+          ./build/cli.js -v
