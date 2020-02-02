@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function Summary({ files, reset }: Props) {
-  console.log(files)
   return (
     <Static>
       <Box paddingBottom={1} marginTop={1}>
