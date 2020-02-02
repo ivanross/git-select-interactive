@@ -17,10 +17,17 @@ export default function UI({ files, git, reset }: Props) {
   const handleFilesSubmit = async (items: FileInfo[]) => {
     if (items.length === 0) return
 
-    const fileNames = flatMap(items, ({ files }) => files.reverse())
+    const getFileNames = (items: FileInfo[]) => flatMap(items, ({ files }) => files.reverse())
 
-    if (reset) await git.reset(fileNames)
-    else await git.add(fileNames)
+    if (!reset) {
+      const fileNames = getFileNames(items)
+      await git.add(fileNames)
+    } else {
+      const deletedFiles = getFileNames(items.filter(({ status }) => status === 'deleted'))
+      const fileNames = getFileNames(items.filter(({ status }) => status !== 'deleted'))
+      if (deletedFiles.length) fileNames.push('--', ...deletedFiles)
+      await git.reset(fileNames)
+    }
 
     setSubmitted(items)
   }
