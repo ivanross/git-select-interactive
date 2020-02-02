@@ -3,7 +3,7 @@ import React from 'react'
 import * as Ink from 'ink'
 import meow from 'meow'
 import Git, { SimpleGit } from 'simple-git/promise'
-import App from './App'
+import UI from './UI'
 import { parse, FileStatusInfo } from './simple-git-parse'
 import { DEFAULT_ERROR_MESSAGE } from './constants'
 
@@ -58,7 +58,7 @@ async function run(git: SimpleGit) {
   const files = parse(statusInfo as FileStatusInfo[], changeInfo, rootDir, workingDir, reset)
   if (files.length === 0) return
 
-  Ink.render(React.createElement(App, { files, git, reset }))
+  Ink.render(React.createElement(UI, { files, git, reset }))
 }
 
 run(git)

@@ -11,13 +11,13 @@ interface Props {
   reset: boolean
 }
 
-export default function App({ files, git, reset }: Props) {
+export default function UI({ files, git, reset }: Props) {
   const [submitted, setSubmitted] = React.useState<FileInfo[]>([])
 
   const handleFilesSubmit = (items: FileInfo[]) => {
     if (items.length === 0) return
 
-    const fileNames = flatMap(items, ({ files }) => files)
+    const fileNames = flatMap(items, ({ files }) => files.reverse())
 
     if (reset) git.reset(fileNames).then(() => setSubmitted(items))
     else git.add(fileNames).then(() => setSubmitted(items))
