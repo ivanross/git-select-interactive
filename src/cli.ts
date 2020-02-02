@@ -2,9 +2,10 @@
 import React from 'react'
 import * as Ink from 'ink'
 import meow from 'meow'
-import Git from 'simple-git'
+import Git, { SimpleGit } from 'simple-git/promise'
 import App from './App'
-import { parseFilesInfo, getWorkingDirFilesInfo, getIndexFilesInfo } from './utils'
+import { parse } from './simple-git-parse'
+import { DEFAULT_ERROR_MESSAGE } from './constants'
 
 const cli = meow({
   help: `
@@ -40,33 +41,24 @@ const cli = meow({
 })
 const { reset } = cli.flags
 const workingDir = process.cwd()
-let rootDir: string
-let changeInfo: any
+
 const git = Git(workingDir)
 
-function mergeBy(arr1, arr2, match) {
-  return arr1.map(obj => {
-    const mergeable = arr2.find(o => match(obj, o))
-    return mergeable ? { ...obj, ...mergeable } : obj
-  })
-}
-
-const DEFAULT_ERROR_MESSAGE = 'fatal: not a git repository (or any of the parent directories): .git'
-
-git
-  .checkIsRepo((err, isRepo) => {
-    if (isRepo) return
+async function run(git: SimpleGit) {
+  const isRepo = await git.checkIsRepo()
+  if (!isRepo) {
     console.error(DEFAULT_ERROR_MESSAGE)
     process.exit(128)
-  })
-  .revparse(['--show-toplevel'], (err, res) => (rootDir = res))
-  .diffSummary(reset ? ['--cached'] : [], (err, res) => (changeInfo = res.files))
-  .status((err, res) => {
-    const getFilesInfo = reset ? getIndexFilesInfo : getWorkingDirFilesInfo
-    const mergedFile = mergeBy(res.files, changeInfo, (file1, file2) => file1.path === file2.file)
-    const fileInfo = getFilesInfo(mergedFile)
-    const files = parseFilesInfo(fileInfo, rootDir, workingDir)
-    if (files.length === 0) return
+  }
 
-    Ink.render(React.createElement(App, { files, git, reset }))
-  })
+  const rootDir = await git.revparse(['--show-toplevel'])
+  const changeInfo = (await git.diffSummary(reset ? ['--cached'] : [])).files
+  const statusInfo = (await git.status()).files
+
+  const files = parse(statusInfo, changeInfo, rootDir, workingDir, reset)
+  if (files.length === 0) return
+
+  Ink.render(React.createElement(App, { files, git, reset }))
+}
+
+run(git)

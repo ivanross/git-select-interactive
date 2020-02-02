@@ -50,7 +50,9 @@
     "typescript": "^3.7.5"
   },
   "jest": {
-    "roots": ["<rootDir>/test"],
+    "roots": [
+      "<rootDir>/test"
+    ],
     "preset": "ts-jest"
   }
 }

@@ -1,19 +1,26 @@
 import React from 'react'
 import FilesMultiSelect from './FilesMultiSelect'
 import Summary from './Summary'
+import { flatMap } from './utils'
+import { SimpleGit } from 'simple-git/promise'
+import { FileInfo } from './simple-git-parse'
 
-const flatMap = (arr, f) => arr.reduce((acc, el) => [...acc, ...f(el)], [])
+interface Props {
+  git: SimpleGit
+  files: FileInfo[]
+  reset: boolean
+}
 
-export default function App({ files, git, reset }) {
-  const [submitted, setSubmitted] = React.useState([])
+export default function App({ files, git, reset }: Props) {
+  const [submitted, setSubmitted] = React.useState<FileInfo[]>([])
 
-  const handleFilesSubmit = items => {
+  const handleFilesSubmit = (items: FileInfo[]) => {
     if (items.length === 0) return
 
     const fileNames = flatMap(items, ({ files }) => files)
 
-    if (reset) git.reset(fileNames, () => setSubmitted(items))
-    else git.add(fileNames, () => setSubmitted(items))
+    if (reset) git.reset(fileNames).then(() => setSubmitted(items))
+    else git.add(fileNames).then(() => setSubmitted(items))
   }
 
   return submitted.length === 0 ? (

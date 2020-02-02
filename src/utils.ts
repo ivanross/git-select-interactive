@@ -1,12 +1,5 @@
 import path from 'path'
-// prettier-ignore
-const statusMap = {
-  "?": "untracked",
-   M : "modified",
-   D : "deleted",
-   R : "renamed",
-   A : "new_file",
-};
+import { MergePartial } from './types'
 
 // prettier-ignore
 export const status2hex = {
@@ -16,6 +9,16 @@ export const status2hex = {
   renamed:   {"green":  true},
   new_file:  {"yellow": true}
 };
+
+export function mergeBy<T, U>(arr1: T[], arr2: U[], match: (t: T, u: U) => boolean) {
+  return arr1.map<MergePartial<T, U>>(obj => {
+    const mergeable = arr2.find(o => match(obj, o))
+    return (mergeable ? { ...mergeable, ...obj } : obj) as MergePartial<T, U>
+  })
+}
+
+export const flatMap = <T, U>(arr: T[], f: (t: T) => U[]): U[] =>
+  arr.reduce<U[]>((acc, el) => [...acc, ...f(el)], [])
 
 export function cleanString(str: string) {
   let s = ''
@@ -29,45 +32,4 @@ export function cleanString(str: string) {
 
 export function relativePath(from: string, to: string, filePath: string) {
   return path.relative(to, path.join(from, filePath))
-}
-
-export function getWorkingDirFilesInfo(files) {
-  return files
-    .filter(({ working_dir }) => statusMap[working_dir])
-    .map(({ path, working_dir, insertions, deletions }) => ({
-      path,
-      status: statusMap[working_dir],
-      insertions,
-      deletions,
-    }))
-}
-
-export function getIndexFilesInfo(files) {
-  return files
-    .filter(({ index, working_dir }) => statusMap[index] && working_dir !== '?')
-    .map(({ path, index, insertions, deletions }) => ({
-      path,
-      status: statusMap[index],
-      insertions,
-      deletions,
-    }))
-}
-
-export function parseFilesInfo(filesInfo, from?, to?) {
-  return filesInfo
-    .reduce((acc, { path, status, insertions, deletions }) => {
-      const fromCWDFiles = path.split(' -> ').map(p => relativePath(from, to, p))
-      const files = fromCWDFiles.map(cleanString)
-
-      acc.push({
-        files,
-        status,
-        label: fromCWDFiles.join(' -> '),
-        value: fromCWDFiles.join(' -> '),
-        insertions: insertions || 0,
-        deletions: deletions || 0,
-      })
-      return acc
-    }, [])
-    .sort((a, b) => a.label.localeCompare(b.label))
 }

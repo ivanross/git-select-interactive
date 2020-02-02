@@ -1,10 +1,4 @@
-import {
-  cleanString,
-  parseFilesInfo,
-  relativePath,
-  getWorkingDirFilesInfo,
-  getIndexFilesInfo,
-} from '../src/utils'
+import { cleanString, relativePath, mergeBy } from '../src/utils'
 
 //prettier-ignore
 const test = [
@@ -33,36 +27,19 @@ describe(relativePath, () => {
   })
 })
 
-describe(getWorkingDirFilesInfo, () => {
-  it('should work', () => {
-    expect(getWorkingDirFilesInfo([])).toEqual([])
-    expect(getWorkingDirFilesInfo(test)).toMatchSnapshot()
-  })
-})
-
-describe(getIndexFilesInfo, () => {
-  it('should work', () => {
-    expect(getIndexFilesInfo([])).toEqual([])
-    expect(getIndexFilesInfo(test)).toMatchSnapshot()
-  })
-})
-
-describe(parseFilesInfo, () => {
-  it('should work with index files', () => {
-    const indexFiles = getIndexFilesInfo(test)
-    expect(parseFilesInfo([])).toEqual([])
-    expect(parseFilesInfo(indexFiles, '', '')).toMatchSnapshot()
-  })
-
-  it('should work with working dir files', () => {
-    const workingDirFiles = getWorkingDirFilesInfo(test)
-    expect(parseFilesInfo([])).toEqual([])
-    expect(parseFilesInfo(workingDirFiles, '', '')).toMatchSnapshot()
-  })
-
-  it('should work with working dir files with different paths', () => {
-    const workingDirFiles = getWorkingDirFilesInfo(test)
-    expect(parseFilesInfo([])).toEqual([])
-    expect(parseFilesInfo(workingDirFiles, '/a/b/e/f', '/a/b/c/d')).toMatchSnapshot()
+describe(mergeBy, () => {
+  it('sohuld merge two array of objects', () => {
+    const a = [
+      { a: 1, b: 1 },
+      { a: 2, b: 2 },
+    ]
+    const b = [
+      { a: 1, c: 1 },
+      { a: 3, c: 3 },
+    ]
+    expect(mergeBy(a, b, ({ a }, { c }) => a === c)).toEqual([
+      { a: 1, b: 1, c: 1 },
+      { a: 2, b: 2 },
+    ])
   })
 })
