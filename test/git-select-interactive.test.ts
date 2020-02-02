@@ -28,7 +28,7 @@ describe(relativePath, () => {
 })
 
 describe(mergeBy, () => {
-  it('sohuld merge two array of objects', () => {
+  it('should merge two array of objects', () => {
     const a = [
       { a: 1, b: 1 },
       { a: 2, b: 2 },
