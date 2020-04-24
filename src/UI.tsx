@@ -27,7 +27,7 @@ export default function UI({ files, git, action }: Props) {
       await git.reset(fileNames)
     } else if (action === 'stash') {
       const fileNames = getFileNames(items)
-      await git.stash(['push', ...fileNames])
+      await git.stash(['push', '--include-untracked', ...fileNames])
     } else {
       const fileNames = getFileNames(items)
       await git.add(fileNames)
