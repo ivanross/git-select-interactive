@@ -1,6 +1,6 @@
 {
   "name": "git-select-interactive",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Interactive mode for git add",
   "author": "Ivan Rossi <ivanross.me@gmail.com>",
   "repository": {
