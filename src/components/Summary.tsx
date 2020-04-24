@@ -3,17 +3,24 @@ import { Box, Color, Text, Static } from 'ink'
 import { status2hex } from '../lib/simple-git-parse'
 import ChangesIndicator from './ChangesIndicator'
 import { FileInfo } from '../lib/simple-git-parse'
+import { Action } from '../lib/types'
 
 interface Props {
   files: FileInfo[]
-  reset: boolean
+  action: Action
 }
 
-export default function Summary({ files, reset }: Props) {
+const action2title: Record<Action, string> = {
+  stage: 'added files',
+  stash: 'stashed files',
+  unstage: 'unstaged files',
+}
+
+export default function Summary({ files, action }: Props) {
   return (
     <Static>
       <Box paddingBottom={1} marginTop={1}>
-        <Text>{reset ? 'unstaged' : 'added'} files: </Text>
+        <Text>{action2title[action]}: </Text>
       </Box>
 
       {files.map(({ status, label, insertions, deletions, binary, after, before }) => (

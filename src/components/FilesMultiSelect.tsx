@@ -10,6 +10,7 @@ import MultiSelect, { Indicator } from 'ink-multi-select'
 import TextInput from 'ink-text-input'
 import { FileInfo } from '../lib/simple-git-parse'
 import { useList } from '../hooks/useList'
+import { Action } from '../lib/types'
 
 const CheckBox = ({ isSelected }: { isSelected: boolean }) => (
   <Box marginRight={1}>
@@ -54,17 +55,17 @@ const Element = (w: number, search: string) => ({
 }
 
 const maxStatusWidth = (files: FileInfo[]) => {
-  const arr = files.map(f => f.status.length)
+  const arr = files.map((f) => f.status.length)
   return Math.max(...arr)
 }
 
 interface Props {
   files: FileInfo[]
   onSubmit: (files: FileInfo[]) => void
-  reset: boolean
+  action: Action
 }
 
-export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
+export default function FilesMultiSelect({ files, onSubmit, action }: Props) {
   const [selected, add, remove, set] = useList<FileInfo>([])
   const [searchFocus, setSearchFocus] = useState(false)
   const [search, setSearch] = useState('')
@@ -76,15 +77,15 @@ export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
   const searchVisible = searchFocus || trimmedSearch
 
   const filteredFiles = trimmedSearch
-    ? files.filter(file => file.label.toLowerCase().includes(trimmedSearch.toLowerCase()))
+    ? files.filter((file) => file.label.toLowerCase().includes(trimmedSearch.toLowerCase()))
     : files
 
-  useInput(input => {
+  useInput((input) => {
     if ((input === 'a' || input === 'A') && !searchFocus) {
-      if (filteredFiles.every(f => selected.includes(f))) {
-        set(selected.filter(f => !filteredFiles.includes(f)))
+      if (filteredFiles.every((f) => selected.includes(f))) {
+        set(selected.filter((f) => !filteredFiles.includes(f)))
       } else {
-        set(selected.concat(filteredFiles.filter(f => !selected.includes(f))))
+        set(selected.concat(filteredFiles.filter((f) => !selected.includes(f))))
       }
     }
 
@@ -95,7 +96,7 @@ export default function FilesMultiSelect({ files, onSubmit, reset }: Props) {
     <Box marginTop={1} flexDirection="column">
       <Box>
         <Box marginRight={1}>
-          {logSymbols.info} Choose which file to {reset ? 'unstage' : 'stage'}.
+          {logSymbols.info} Choose which file to {action}.
         </Box>
         <Box>
           (Press <Color blue>{'<space>'}</Color> to select, <Color blue>{'<a>'}</Color> to toggle

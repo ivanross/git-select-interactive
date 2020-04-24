@@ -24,7 +24,7 @@ $ git select-interactive
 
 Navigate file list with arrows, press `<space>` to select/deselect a single file, press `<a>` to select/deselect all. Finally press `<return>` to **stage** files.
 
-Use `--reset` option to **unstage** files.
+Use `--reset` option to **unstage** files, `--stash` to **stash** files.
 
 ### Search bar
 

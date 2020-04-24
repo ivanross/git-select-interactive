@@ -4,14 +4,15 @@ import Summary from './components/Summary'
 import { flatMap } from './lib/utils'
 import { SimpleGit } from 'simple-git/promise'
 import { FileInfo } from './lib/simple-git-parse'
+import { Action } from './lib/types'
 
 interface Props {
   git: SimpleGit
   files: FileInfo[]
-  reset: boolean
+  action: Action
 }
 
-export default function UI({ files, git, reset }: Props) {
+export default function UI({ files, git, action }: Props) {
   const [submitted, setSubmitted] = React.useState<FileInfo[]>([])
 
   const handleFilesSubmit = async (items: FileInfo[]) => {
@@ -19,22 +20,25 @@ export default function UI({ files, git, reset }: Props) {
 
     const getFileNames = (items: FileInfo[]) => flatMap(items, ({ files }) => files.reverse())
 
-    if (!reset) {
-      const fileNames = getFileNames(items)
-      await git.add(fileNames)
-    } else {
+    if (action === 'unstage') {
       const deletedFiles = getFileNames(items.filter(({ status }) => status === 'deleted'))
       const fileNames = getFileNames(items.filter(({ status }) => status !== 'deleted'))
       if (deletedFiles.length) fileNames.push('--', ...deletedFiles)
       await git.reset(fileNames)
+    } else if (action === 'stash') {
+      const fileNames = getFileNames(items)
+      await git.stash(['push', ...fileNames])
+    } else {
+      const fileNames = getFileNames(items)
+      await git.add(fileNames)
     }
 
     setSubmitted(items)
   }
 
   return submitted.length === 0 ? (
-    <FilesMultiSelect files={files} onSubmit={handleFilesSubmit} reset={reset} />
+    <FilesMultiSelect files={files} onSubmit={handleFilesSubmit} action={action} />
   ) : (
-    <Summary files={submitted} reset={reset} />
+    <Summary files={submitted} action={action} />
   )
 }
