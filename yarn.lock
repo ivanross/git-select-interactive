@@ -3393,10 +3393,9 @@ normalize-url@^4.1.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha512-2s47yzUxdexf1OhyRi4Em83iQk0aPvwTddtFz4hnSSw9dCEsLEGf6SwIO8ss/19S9iBb5sJaOuTvTGDeZI00BQ==
 
-np@^6.2.2:
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/np/-/np-6.2.2.tgz#a63b19d00f444361d4c0103cc4c89263c3538fc5"
-  integrity sha512-C+5nIA9wnXlSK63TcoI5ajszCvjLVdXM9zC/4i80ewdxvGGeSiDlzo8bNbZ2LYBLNoezT487bE5J3qIzthIhGQ==
+np@pixelastic/np#feat/no-2fa:
+  version "6.2.0"
+  resolved "https://codeload.github.com/pixelastic/np/tar.gz/c3ab2e3b053c7da0ce40a572ca1616273ac080f8"
   dependencies:
     "@samverschueren/stream-to-observable" "^0.3.0"
     any-observable "^0.5.0"
