@@ -3,6 +3,10 @@ import { spawn } from 'child_process'
 import React from 'react'
 import * as Ink from 'ink'
 import meow from 'meow'
+import latestVersion from 'latest-version'
+// import { version as currentVersion } from '../package.json'
+const currentVersion = require('../package.json').version
+
 import Git, { SimpleGit } from 'simple-git/promise'
 import UI from './UI'
 import { parse, FileStatusInfo } from './lib/simple-git-parse'
@@ -44,7 +48,15 @@ const action: Action = reset ? 'unstage' : stash ? 'stash' : 'stage'
 
 const workingDir = process.cwd()
 
+async function banner() {
+  try {
+    console.log({ latestVersion: await latestVersion('git-select-interactive') })
+    console.log({ currentVersion })
+  } catch {}
+}
+
 async function run(git: SimpleGit) {
+  await banner()
   const isRepo = await git.checkIsRepo()
   if (!isRepo) {
     console.error(DEFAULT_ERROR_MESSAGE)
