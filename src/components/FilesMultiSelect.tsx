@@ -81,15 +81,17 @@ export default function FilesMultiSelect({ files, onSubmit, action }: Props) {
     : files
 
   useInput((input) => {
-    if ((input === 'a' || input === 'A') && !searchFocus) {
-      if (filteredFiles.every((f) => selected.includes(f))) {
-        set(selected.filter((f) => !filteredFiles.includes(f)))
-      } else {
-        set(selected.concat(filteredFiles.filter((f) => !selected.includes(f))))
+    if (!searchFocus) {
+      if (input === 'a' || input === 'A') {
+        if (filteredFiles.every((f) => selected.includes(f))) {
+          set(selected.filter((f) => !filteredFiles.includes(f)))
+        } else {
+          set(selected.concat(filteredFiles.filter((f) => !selected.includes(f))))
+        }
       }
+      if (input === 'f' || input === 'F') setSearchFocus(true)
+      if (input === 'q' || input === 'Q') process.exit(0)
     }
-
-    if (input === 'f' && !searchFocus) setSearchFocus(true)
   })
 
   return (
@@ -100,7 +102,7 @@ export default function FilesMultiSelect({ files, onSubmit, action }: Props) {
         </Box>
         <Box>
           (Press <Color blue>{'<space>'}</Color> to select, <Color blue>{'<a>'}</Color> to toggle
-          all)
+          all, <Color blue>{'<q>'}</Color> to exit)
         </Box>
       </Box>
 
