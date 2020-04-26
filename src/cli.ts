@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { spawn } from 'child_process'
 import React from 'react'
 import * as Ink from 'ink'
 import meow from 'meow'
@@ -7,25 +8,10 @@ import UI from './UI'
 import { parse, FileStatusInfo } from './lib/simple-git-parse'
 import { DEFAULT_ERROR_MESSAGE } from './lib/constants'
 import { Action } from './lib/types'
+const pkg = require('../package.json')
 
 const cli = meow({
-  help: `
-  Usage
-    
-    $ git select-interactive [--reset | --stash]
-    
-  Select files to stage with interactive cli.
-  Use arrows to navigate, <space> to select, <a> to 
-  toggle all.
-
-  Options
-  
-    --reset,   -r     Select files to unstage
-    --stash,   -s     Select files to stash
-    --help,    -h     Show help
-    --version, -v     Show version
-`,
-  autoHelp: true,
+  autoHelp: false,
   flags: {
     help: {
       type: 'boolean',
@@ -45,12 +31,18 @@ const cli = meow({
     },
   },
 })
-const { reset, stash } = cli.flags
+const { reset, stash, help } = cli.flags
+
+function showManPage() {
+  spawn('man', [pkg.name], {
+    stdio: 'inherit',
+    detached: false,
+  })
+}
+
 const action: Action = reset ? 'unstage' : stash ? 'stash' : 'stage'
 
 const workingDir = process.cwd()
-
-const git = Git(workingDir)
 
 async function run(git: SimpleGit) {
   const isRepo = await git.checkIsRepo()
@@ -69,4 +61,9 @@ async function run(git: SimpleGit) {
   Ink.render(React.createElement(UI, { files, git, action }))
 }
 
-run(git)
+if (help) {
+  showManPage()
+} else {
+  const git = Git(workingDir)
+  run(git)
+}

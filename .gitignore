@@ -4,3 +4,4 @@ coverage
 private
 *.log
 build
+man
