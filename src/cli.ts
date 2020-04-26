@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execSync } from 'child_process'
 import React from 'react'
 import * as Ink from 'ink'
 import meow from 'meow'
@@ -9,23 +10,7 @@ import { DEFAULT_ERROR_MESSAGE } from './lib/constants'
 import { Action } from './lib/types'
 
 const cli = meow({
-  help: `
-  Usage
-    
-    $ git select-interactive [--reset | --stash]
-    
-  Select files to stage with interactive cli.
-  Use arrows to navigate, <space> to select, <a> to 
-  toggle all.
-
-  Options
-  
-    --reset,   -r     Select files to unstage
-    --stash,   -s     Select files to stash
-    --help,    -h     Show help
-    --version, -v     Show version
-`,
-  autoHelp: true,
+  autoHelp: false,
   flags: {
     help: {
       type: 'boolean',
@@ -45,7 +30,17 @@ const cli = meow({
     },
   },
 })
-const { reset, stash } = cli.flags
+const { reset, stash, help } = cli.flags
+
+if (help) {
+  try {
+    execSync('man git-select-interactive')
+  } catch {
+  } finally {
+    process.exit(1)
+  }
+}
+
 const action: Action = reset ? 'unstage' : stash ? 'stash' : 'stage'
 
 const workingDir = process.cwd()
