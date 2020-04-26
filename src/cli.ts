@@ -8,6 +8,7 @@ import UI from './UI'
 import { parse, FileStatusInfo } from './lib/simple-git-parse'
 import { DEFAULT_ERROR_MESSAGE } from './lib/constants'
 import { Action } from './lib/types'
+import { TestRawMode } from './components/Test'
 const pkg = require('../package.json')
 
 const cli = meow({
@@ -61,9 +62,10 @@ async function run(git: SimpleGit) {
   Ink.render(React.createElement(UI, { files, git, action }))
 }
 
-if (help) {
-  showManPage()
-} else {
-  const git = Git(workingDir)
-  run(git)
-}
+Ink.render(React.createElement(TestRawMode))
+// if (help) {
+//   showManPage()
+// } else {
+//   const git = Git(workingDir)
+//   run(git)
+// }
