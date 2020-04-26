@@ -81,14 +81,17 @@ export default function FilesMultiSelect({ files, onSubmit, action }: Props) {
     : files
 
   useInput((input) => {
-    if ((input === 'a' || input === 'A') && !searchFocus) {
-      if (filteredFiles.every((f) => selected.includes(f))) {
-        set(selected.filter((f) => !filteredFiles.includes(f)))
-      } else {
-        set(selected.concat(filteredFiles.filter((f) => !selected.includes(f))))
+    if (!searchFocus) {
+      if (input === 'a' || input === 'A') {
+        if (filteredFiles.every((f) => selected.includes(f))) {
+          set(selected.filter((f) => !filteredFiles.includes(f)))
+        } else {
+          set(selected.concat(filteredFiles.filter((f) => !selected.includes(f))))
+        }
       }
-    } else if (input === 'f' && !searchFocus) setSearchFocus(true)
-    else if (input === 'q' && !searchFocus) process.exit(0)
+      if (input === 'f' || input === 'F') setSearchFocus(true)
+      if (input === 'q' || input === 'Q') process.exit(0)
+    }
   })
 
   return (
