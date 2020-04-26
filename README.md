@@ -6,13 +6,15 @@
 
 <img align="middle" src="docs/git-select-interactive.png"  />
 
+## Prerequisites
+
+Requires [git](https://git-scm.com/downloads) and [node.js](https://nodejs.org) to be installed.
+
 ## Install
 
 ```
 $ npm install --global git-select-interactive
 ```
-
-Requires [git](https://git-scm.com/downloads) to be installed.
 
 ## Usage
 
