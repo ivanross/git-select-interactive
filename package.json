@@ -31,7 +31,7 @@
     "test": "jest",
     "release": "np --no-2fa",
     "prerelease": "yarn build && yarn man",
-    "man": "marked-man ./man/man.md > ./man/git-select-interactive.1"
+    "man": "rm -rf man && mkdir man && marked-man ./src/md/man.md > ./man/git-select-interactive.1"
   },
   "dependencies": {
     "figures": "^3.2.0",
