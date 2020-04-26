@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { execSync } from 'child_process'
+import { spawn } from 'child_process'
 import React from 'react'
 import * as Ink from 'ink'
 import meow from 'meow'
@@ -8,6 +8,7 @@ import UI from './UI'
 import { parse, FileStatusInfo } from './lib/simple-git-parse'
 import { DEFAULT_ERROR_MESSAGE } from './lib/constants'
 import { Action } from './lib/types'
+const pkg = require('../package.json')
 
 const cli = meow({
   autoHelp: false,
@@ -32,20 +33,16 @@ const cli = meow({
 })
 const { reset, stash, help } = cli.flags
 
-if (help) {
-  try {
-    execSync('man git-select-interactive')
-  } catch {
-  } finally {
-    process.exit(1)
-  }
+function showManPage() {
+  spawn('man', [pkg.name], {
+    stdio: 'inherit',
+    detached: false,
+  })
 }
 
 const action: Action = reset ? 'unstage' : stash ? 'stash' : 'stage'
 
 const workingDir = process.cwd()
-
-const git = Git(workingDir)
 
 async function run(git: SimpleGit) {
   const isRepo = await git.checkIsRepo()
@@ -64,4 +61,9 @@ async function run(git: SimpleGit) {
   Ink.render(React.createElement(UI, { files, git, action }))
 }
 
-run(git)
+if (help) {
+  showManPage()
+} else {
+  const git = Git(workingDir)
+  run(git)
+}
