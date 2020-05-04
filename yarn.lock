@@ -3446,7 +3446,8 @@ normalize-url@^4.1.0:
 
 np@pixelastic/np#feat/no-2fa:
   version "6.2.0"
-  resolved "https://codeload.github.com/pixelastic/np/tar.gz/c3ab2e3b053c7da0ce40a572ca1616273ac080f8"
+  uid c7c312e70a87ebe0db6aa808d11d5968b4e5c1ce
+  resolved "https://codeload.github.com/pixelastic/np/tar.gz/c7c312e70a87ebe0db6aa808d11d5968b4e5c1ce"
   dependencies:
     "@samverschueren/stream-to-observable" "^0.3.0"
     any-observable "^0.5.0"
