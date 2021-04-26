@@ -41,7 +41,7 @@
     "log-symbols": "^3.0.0",
     "meow": "^6.1.0",
     "react": "^16.13.1",
-    "simple-git": "^1.132.0"
+    "simple-git": "^2.38.0"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
