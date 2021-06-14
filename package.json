@@ -39,7 +39,7 @@
     "ink-multi-select": "^1.1.2",
     "ink-text-input": "^3.2.2",
     "log-symbols": "^3.0.0",
-    "meow": "^6.1.0",
+    "meow": "^10.0.1",
     "react": "^16.13.1",
     "simple-git": "^1.132.0"
   },
